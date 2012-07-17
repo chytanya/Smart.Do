@@ -69,15 +69,6 @@
 			            </div>
 					</div>
 
-					<div class="row-fluid">
-		           		 <div class="span12 controls">
-		           		 	<div id="tags">
-		           		 		<div id="tags-holder"></div>
-		              			<div contenteditable="true"  id="create-tag" placeholder="Add tags"></div>
-		              		</div>
-		            	</div>
-		          	</div>
-
 		          	<div class="row-fluid">
 		           		 <div class="span12 controls">
 		              		<div class="smart-do calendar" id="schedule"></div>
@@ -154,16 +145,6 @@
 						                </div>
 					                <% } %>
 					                </div>
-
-					                <% if(todo.tags) { %> 
-						                <div class="row-fluid tags-wrapper">
-						                  	<div class="span12 tags">
-						                  		<% _.each(todo.tags, function(tag){ %>
-								                	<span class="label label-info tag"><%=tag %></span>		                    
-						                  		<% }) %>
-						                  	</div>
-						                </div>
-					                <% } %>
 
 					            </div>
 
