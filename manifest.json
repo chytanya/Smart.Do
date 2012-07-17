@@ -1,0 +1,17 @@
+{
+  "name": "Smart Do",
+  "version": "1.0",
+  "description": "Smart Assitant to help get things DONE.",
+  "browser_action": {
+    "default_icon": "icon.png",
+	"default_popup": "popup.html"
+  },
+  "permissions": [ "cookies", "privacy", "http://*/*" , "geolocation"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["cookie_handler.js", "js/underscore-1.3.3.js"]
+    }
+  ]
+
+}

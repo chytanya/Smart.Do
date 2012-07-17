@@ -1,0 +1,274 @@
+body {
+	background: url('../img/bg.gif');
+	width: 480px;
+}
+
+
+blockquote p {
+	margin-bottom: 0;
+	font-size: 19px;
+	font-weight: 100;
+	line-height: 22.5px;
+	color: grey;
+	letter-spacing: 1.4px;
+}
+
+
+@font-face {
+    font-family: 'FaracoHandRegular';
+    src: url('../fonts/faraco_hand-webfont.eot');
+    src: url('../fonts/faraco_hand-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/faraco_hand-webfont.woff') format('woff'),
+         url('../fonts/faraco_hand-webfont.ttf') format('truetype'),
+         url('../fonts/faraco_hand-webfont.svg#FaracoHandRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#app .nav-tabs{
+	margin-right: 0px;
+	height: 600px;
+}
+
+#app .nav-tabs{
+	background: url('../img/nav-bg.png');
+}
+
+#app tab-content{
+	overflow: none;
+}
+
+.nav-icon {
+	background-size: 35%;
+	background-repeat: no-repeat;
+	height: 50px;
+	text-align: center;
+	background-position: center center;
+}
+
+#app .nav-tabs li a{
+	margin-bottom: 0px;
+	-webkit-border-radius: 0px;
+	outline: none;
+	min-width: 40px;
+}
+
+#app .nav-tabs li a:hover{
+	background-color: #ddd;
+}
+
+#app .nav-tabs li.active a{
+	background-color: white;
+	border-right: 5px solid salmon;
+}
+
+.active .nav-icon.create-icon {
+	background-color: whiteSmoke;
+}
+
+.nav-icon:hover{
+	outline: none;
+	border:none;
+}
+
+.active .nav-icon.todos-icon, .nav-icon.todos-icon:hover {
+	background-image: url('../img/todos-black.png');
+}
+
+.nav-icon.todos-icon {
+	background-image: url('../img/todos-white.png');
+}
+
+.active  .nav-icon.settings-icon,  .nav-icon.settings-icon:hover  {
+	background-image: url('../img/settings-black.png');
+}
+
+.nav-icon.settings-icon {
+	background-image: url('../img/settings-white.png');
+}
+
+.active .nav-icon.create-icon,  .nav-icon.create-icon:hover  {
+	background-image: url('../img/create-black.png');
+}
+
+.nav-icon.create-icon {
+	background-image: url('../img/create-white.png');
+}
+
+
+/******** TODO LIST VIEW *************/
+
+#todos .content{
+	 margin-top: 10px;
+	 padding-right: 10px;
+}
+
+#todo-list{
+	position: relative;
+}
+
+#todo-details {
+  overflow-y : auto;
+}
+
+.todo {
+	margin-top: 10px;
+	padding: 10px;
+	float: left;
+	width: 340px;
+	background-color: white;
+}
+
+.todo .main, .todo .details {
+
+}
+
+.todo .due_date_wrapper{
+}
+
+.todo .details-wrapper{
+	float:left;
+}
+
+.todo .action-items {
+	margin-bottom: 5px;
+	border-bottom: 1px solid #CCC;
+}
+
+.todo .main .due_date_wrapper {
+	text-align: center;
+	float: right;}
+
+.todo .main .due_date {
+	background-color: red;
+	opacity: 0.5;
+	border-radius: 50px;
+	width: 50px;
+	height: 50px;
+	color: white;
+	font-weight: bold;
+}
+
+.todo .main .due_date .value {
+	padding-top: 10px;
+	font-size: 18px;
+}
+
+.todo .main .due_date .key {
+	font-size: 11px;
+}
+
+.todo .main .text {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+	padding: 10px 0px;
+	line-height: 30px;
+	font-size: 17px;
+	color: #333;
+}
+
+.todo .location {
+	width: 100%;
+	padding-bottom: 10px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #CCC;
+	color: #888;
+	height: 30px;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.todo .tags {
+	width: 100%;
+	padding-bottom: 10px;
+	margin-bottom: 5px;
+}
+
+.todo .tags .tag {
+	margin: 3px;
+}
+
+.todo .details {
+	background-color: white;
+}
+
+.todo .details .default {
+	text-align: center;
+	cursor: pointer;
+}
+
+
+/*********** TODO DETAILS ***************/
+
+#todo-details .search-result{
+	box-shadow: 0 0 2px #AAA;
+	border-bottom: 1px solid grey;
+}
+
+#todo-details .name{
+	padding: 10px 5px 0px 0px;
+}
+
+#todo-details .name .title{
+	ffont-size: 14px;
+	line-height: 26px;
+}
+
+#todo-details .name img{
+	width: 32px;
+}
+
+#todo-details .formatted-address{
+	color: #666;
+	margin-bottom: 5px;
+	font-size: 11px;
+}
+
+
+/******** CREATE TODO VIEW *************/
+
+#create .content {
+	padding: 20px;
+}
+
+#create .content #label {
+	padding: 10px;
+	height: 100px;
+	font-size: 15px;
+}
+
+#create .content #tags{
+	padding: 10px;
+	height: 15px;
+	font-size: 15px;
+	background-color: white;
+	height: 30px;
+	width: 275px;
+	margin-bottom: 10px;
+	line-height: 30px;
+}
+
+#create .content #tags #tags-holder{
+	display: inline;
+	float:left;
+}
+
+#create .content #tags #tags-holder .label{
+	margin: 2px;
+	padding: 3px 5px;
+}
+
+#create .content #tags #create-tag{
+	height: 20px;
+	padding: 5px;
+	outline: none;
+}
+
+#create .content #create-btn{
+	width: 295px;
+	height: 40px;
+	font-size: 16px;
+}
+
+#create #create-btn{
+	margin-top: 10px;
+}

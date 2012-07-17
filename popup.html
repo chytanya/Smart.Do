@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+   		<title>BloomBoard Chrome Extension</title>
+   		<style>
+     	body {
+       		overflow-x:hidden;
+     	}	
+   		</style>
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="css/smart-do/jquery-ui-1.8.21.custom.css" type="text/css">
+		<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="css/default.css" type="text/css">
+ 	</head>
+ 	<body>
+		
+
+		<div class="row-fluid">
+			<div class="span12">
+				
+				<div class="row-fluid tabbable tabs-left" id="app">
+			        <ul class="span2 nav nav-tabs">
+			       		<li class="row-fluid active"><a href="#todos" data-toggle="tab" class="span12 nav-icon todos-icon"></a></li>
+			          	<li class="row-fluid"><a href="#create" data-toggle="tab" class="span12 nav-icon create-icon"></a></li>
+			          	<li class="row-fluid"> <a href="#settings" data-toggle="tab" class="span12 nav-icon settings-icon"></a></li>
+			          	<li class="row-fluid"> <a href="#details" data-toggle="tab" class="span12 nav-icon settings-icon"></a></li>
+			        </ul>
+
+			        <div class="span10 tab-content">
+			        	<div class="row-fluid tab-pane active" id="todos">
+			            	<div class="span12 content">
+			            		All todos
+			            	</div>
+			          	</div>
+			          	<div class="row-fluid tab-pane" id="settings">
+			            	<div class="span12 content">
+			            		Settings page
+			            	</div>
+			          	</div>
+			          	<div class="row-fluid tab-pane" id="create">
+			            	<div class="span12 content">
+			            		Create new todo.
+			            	</div>
+			          	</div>
+
+			          	<div class="row-fluid tab-pane" id="details">
+			            	<div class="span12 content">
+			            		TODO Details
+			            	</div>
+			          	</div>
+
+			        </div>
+
+			    </div>
+
+
+			</div>
+		</div>
+
+		<script type="text/template" id="create-todo-template">
+
+			<div class="row-fluid">
+				
+				<div class="span12">
+					
+					<div class="row-fluid-fluid">
+			            <div class="span12 controls">
+			            	<textarea class="input-xlarge" id="label" rows="3" placeholder="Create a new todo"></textarea>
+			            </div>
+					</div>
+
+					<div class="row-fluid">
+		           		 <div class="span12 controls">
+		           		 	<div id="tags">
+		           		 		<div id="tags-holder"></div>
+		              			<div contenteditable="true"  id="create-tag" placeholder="Add tags"></div>
+		              		</div>
+		            	</div>
+		          	</div>
+
+		          	<div class="row-fluid">
+		           		 <div class="span12 controls">
+		              		<div class="smart-do calendar" id="schedule"></div>
+		            	</div>
+		          	</div>
+
+		          	<div class="row-fluid">
+		          		<div class="span12">
+			            	<button class="btn" id="create-btn">Create</button>
+			            </div>
+			         </div>
+
+		          </div>
+		    </div>
+
+		</script>
+
+		<script type="text/template" id="todo-list-template">
+
+			<% if(todos.active){ %>
+				
+				<div class="row-fluid" id="todo-list">
+					<div class="span12">
+						<% _.each(todos.active, function(todo){ %>
+							<%=todoTemplate({ todo : todo }) %> 
+						<% }); %>
+					</div>
+				</div>
+
+			<% }else{ %>
+				
+				<div class="row-fluid" id="todo-list">
+					<div class="span12 no-tasks">
+						Create A ToDo!
+					</div>
+				</div>
+
+			<% } %>
+
+		
+
+		</script>
+
+		<script type="text/template" id="todo-template">
+			<div class="row-fluid">
+				<div class="span12 todo" data-todo-id="<%=todo.id %>">
+	              	<div class="row-fluid main">
+	              		<div class="span12"> 
+
+			                <div class="row-fluid action-items">
+			                	<div class="span1">
+			                  		<i class="icon-comment get-details"></i>
+			                	</div>
+			                	<div class="span1">
+									<i class="icon-trash"></i>
+			                	</div>
+			                </div>
+
+			                <div class="row-fluid details-wrapper">
+				            	<div class="span10">    
+
+					                <div class="row-fluid text">
+					                	<div class="span12">
+					                  		<blockquote><p><%=todo.label %></p></blockquote>
+					                  	</div>
+					                </div>
+
+					                <div class="row-fluid text">
+					                <% if(todo.location) { %> 
+						                <div class="span12 location">
+						                  	<div class="icon-globe"></div>
+						                  	<span clas="helper">near</span>
+						                  	<span class="content">Sunnyvale, 94086</span>
+						                </div>
+					                <% } %>
+					                </div>
+
+					                <% if(todo.tags) { %> 
+						                <div class="row-fluid tags-wrapper">
+						                  	<div class="span12 tags">
+						                  		<% _.each(todo.tags, function(tag){ %>
+								                	<span class="label label-info tag"><%=tag %></span>		                    
+						                  		<% }) %>
+						                  	</div>
+						                </div>
+					                <% } %>
+
+					            </div>
+
+					            <% 
+					            	var datetime_parts = [];
+					            	var due_datetime = todo.due_datetime;
+					            	var datetime_formatted = null;
+					            	if(due_datetime){ 
+					            		datetime_formatted = moment(due_datetime).fromNow();
+					            		datetime_parts = datetime_formatted.split(' ');
+					            	}
+					            %>
+
+				               	<div class="span2 due_date_wrapper">
+				                  	<div class="row-fluid due_date" data-due-date-time="<%=due_datetime %>">
+				                  		<div class="span12">
+				                    		<% if(datetime_parts.length == 3 ){ %>
+				                    			<div class="value"><%= datetime_parts[1] %></div>
+				                      			<div class="key"><%= datetime_parts[2] %></div>
+				                      		<% }else{ %>
+				                      			<div class="value">00</div>
+				                      			<div class="key">??</div>
+				                      		<% } %>
+				                      	</div>
+				                  	</div>
+				                </div>
+
+				            </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+
+		</script>
+
+		<script type="text/template" id="settings-template">
+
+			<div class="row" id="settings">
+
+			</div>
+
+		</script>
+
+
+		<script type="text/template" id="todo-details-template">
+		
+		<div class="row-fluid" id="todo-details-wrapper">
+			<div class="span12" id="todo-details">
+				<div class="row-fluid search-result">
+					<div class="span12">
+
+						<div class="row-fluid name">
+							<div class="span1">
+								<img src="<%=search_object.icon %>" />
+							</div>
+							<div class="span11 title">
+								<%=search_object.name %>
+							</div>
+						</div>
+
+						<div class="row-fluid formatted-address">
+							<div class="span12">
+								<i class="icon-map-marker"></i>
+								<span><%=search_object.formatted_address %></span>
+							</div>
+						</div>
+
+						<div class="row-fluid">
+							<div class="span12 tags categories">
+							<% _.each(search_object.types, function(type){ %>
+								<span class="label label-info tag"><%=type %></span>
+							<% }); %>
+							</div>
+						</div>
+
+						<% if(typeof search_object.rating !== 'undefined'){ %> 
+							<div class="row-fluid rating">
+								<div class="span12">
+									<span> Rating: <%=search_object.rating %> </span>
+								</div>
+							</div>
+						<% } %>
+
+						<% if(typeof search_object.open_now !== 'undefined'){ %> 
+							<div class="row-fluid open-now">
+								<div class="span12">
+									Open Now: <span class="label"> <%= search_object.open_now ? 'YES' : 'NO' %> </span>
+								</div>
+							</div>
+						<% } %>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</script>
+
+
+		<!-- JavaScript and HTML must be in separate files for security. -->
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/jquery-ui-1.8.21.custom.min.js"></script>
+		<script src="js/jquery-ui-timepicker-addon.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap-tab.js"></script>
+		<script src="js/underscore-1.3.3.js"></script>
+		<script src="js/backbone.0.9.1-min.js"></script>
+		<script src="js/deep-model.js"></script>
+		<script src="js/moment.min.js"></script>
+
+   		<div id="map"></div>
+  		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+   		<script type="text/javascript">
+		    var map;
+		    var service;
+		    var infowindow;
+		    var geoLocationData = null;
+
+
+		    // INITIALIZE GEO LOCATION STUFF
+		    // ---------------------------------------------------
+		    function error(data){ console.log('Problem fetching user location', data); }
+			function success(data){ geoLocationData = data; }
+
+			var options = {
+            				maximumAge:Infinity,
+            				timeout:5000
+        				};
+
+		    navigator.geolocation.getCurrentPosition(success, error, options);
+
+
+		    // SEARCH STUFF
+		    // ---------------------------------------------------
+		    function initializeSearch(input) {
+
+		    	if(!geoLocationData) { console.log('No location found for user'); return false; }
+
+		    	var currentLocation = new google.maps.LatLng(geoLocationData.coords.latitude, geoLocationData.coords.longitude);
+
+		      	map = new google.maps.Map(document.getElementById('map'), {
+		          	mapTypeId: google.maps.MapTypeId.ROADMAP,
+		          	center: currentLocation,
+		          	zoom: 15
+		        });
+
+		     	var request = {
+		        				location: currentLocation,
+		        				radius: '500',
+		        				query: input
+		      				};
+
+		      	service = new google.maps.places.PlacesService(map);
+		      	service.textSearch(request, callback);
+		    }
+
+
+		    function callback(results, status) {
+		      	
+		      	var todoDetailsTemplate = _.template($('#todo-details-template').html());
+				$("#app #details .content").html('');
+				if (status == google.maps.places.PlacesServiceStatus.OK) {
+		        	for (var i = 0; i < results.length; i++) {
+		          		console.log('the result', results[i]);
+						$("#app #details .content").append( todoDetailsTemplate({ search_object :  results[i] }));
+		        	}
+		      	}
+		      	$('a[href="#details"]').tab('show');
+		    }
+		</script>
+
+
+		<script src="js/popup.js"></script>
+
+
+ 	</body>
+</html>
